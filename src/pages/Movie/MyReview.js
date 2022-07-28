@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { useRecoilState } from 'recoil';
-import { buttonState, reviewState } from '../../state';
+import { buttonState } from '../../state';
 import { CardContainer } from './CardContainer';
 import { Box, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -9,17 +9,15 @@ import EditIcon from '@mui/icons-material/Edit';
 import MovieRating from './MovieRating';
 import { Logo } from './ContentLogo';
 import { ReviewIcon, FabContainer } from './MyIconButton';
-import useDelete from '../../util/useDelete';
+import { useDelete } from '../../util/useDelete';
 
-function MyReview({ openModal }) {
+function MyReview({ openModal, review }) {
   const [button, setButton] = useRecoilState(buttonState);
-  const [review, setReview] = useRecoilState(reviewState);
 
   const handleDelete = () => setButton({ ...button, isDeleting: true });
-  useDelete();
-  console.log('나는 리뷰', review);
+  useDelete(review.review_id);
 
-  if (!review?.review_id) return null;
+  if (!review.review_id) return null;
   return (
     <MyReviewContainer>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -31,7 +29,7 @@ function MyReview({ openModal }) {
       </MyBox>
       <MyReviewContent variant="body1">{review.content}</MyReviewContent>
       <FabContainer>
-        <EditButton onClick={() => openModal()}>
+        <EditButton onClick={openModal}>
           <EditIcon />
         </EditButton>
         <DeleteButton onClick={handleDelete}>

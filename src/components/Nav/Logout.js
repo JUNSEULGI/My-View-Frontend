@@ -20,7 +20,7 @@ function MyAvatar({ userInfo }) {
   const logout = () => {
     localStorage.removeItem('access_token');
     resetUser();
-    alert('로그아웃 성공');
+    alert('로그아웃되었습니다.');
     navigate('/');
   };
 

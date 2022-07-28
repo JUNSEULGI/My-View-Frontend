@@ -7,6 +7,7 @@ export default atom({
     title: '',
     thumbnail_image_url: '',
     country: '',
+    category: '',
     genre: [],
     running_time: 0,
     age: 0,
@@ -15,5 +16,6 @@ export default atom({
     actor: [],
     video_url: [],
     image_url: [],
+    review_id: '',
   },
 });

@@ -1,14 +1,13 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { useRecoilState } from 'recoil';
-import { buttonState, movieState, reviewState } from '../../state';
+import { buttonState, movieState } from '../../state';
 import { Box, Button, ButtonGroup, Modal } from '@mui/material';
 
 function MyViewModal({ open, closeModal, breadcrumbs, content }) {
   const [movie, setMovie] = useRecoilState(movieState);
-  const [review, setReview] = useRecoilState(reviewState);
   const [button, setButton] = useRecoilState(buttonState);
-
+  console.log(movie.review_id);
   return (
     <MyModal
       open={open}
@@ -19,7 +18,7 @@ function MyViewModal({ open, closeModal, breadcrumbs, content }) {
       <Container>
         <Step breadcrumbs={breadcrumbs}>{breadcrumbs}</Step>
         <Buttons variant="text">
-          {review?.review_id && (
+          {movie?.review_id && (
             <ModalButton
               onClick={() => setButton({ ...button, isDeleting: true })}
             >

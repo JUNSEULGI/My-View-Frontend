@@ -1,23 +1,26 @@
 import React from 'react';
 import { useRecoilState, useResetRecoilState } from 'recoil';
-import { movieState, reviewState, buttonState, userState } from '../../state';
+import { movieState } from '../../state';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { Box, Card, CardMedia, Typography, Rating, Chip } from '@mui/material';
 
-function MovieCard({ data, setOpen, showReview }) {
+function MovieCard({ data, setOpen }) {
   const navigation = useNavigate();
+  const [movie, setMovie] = useRecoilState(movieState);
   const resetMovie = useResetRecoilState(movieState);
-  const resetReview = useResetRecoilState(reviewState);
 
-  const showMovie = id => {
+  const showMovie = () => {
     navigation(`/movie/${data.movie.id}`);
   };
 
+  const showReview = () => {
+    setMovie({ id: data.movie.id, review_id: data.review_id });
+    setOpen(true);
+  };
+
   const addMovie = () => {
-    //
     resetMovie();
-    resetReview();
     setOpen(true);
   };
 

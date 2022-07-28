@@ -1,5 +1,5 @@
 import Actor from './Actor';
-import AgeBadge from './AgeBadge';
+import AgeBadge from '../../components/AgeBadge';
 import { CardContainer } from './CardContainer';
 import { Logo } from './ContentLogo';
 import MovieGallery from './MovieGallery';

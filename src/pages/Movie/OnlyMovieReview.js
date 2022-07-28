@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { useLocation, useParams } from 'react-router-dom';
-import { useRecoilState, useResetRecoilState } from 'recoil';
-import { movieState, reviewState, buttonState, userState } from '../../state';
+import { useRecoilState } from 'recoil';
+import { movieState, buttonState, userState } from '../../state';
 import styled from '@emotion/styled';
 import { Box, Typography, TextField, Rating } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -11,9 +11,8 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import Poster from '../../components/Poster/Poster';
 import { AgeBadge } from '../../pages/Movie';
 import { BASE_URL } from '../../Modules/API';
-import { Button } from '@mui/material';
 
-function OnlyMovieReview({ data }) {
+function OnlyMovieReview() {
   const token = localStorage.getItem('access_token');
   const [movie, setMovie] = useRecoilState(movieState);
   const [button, setButton] = useRecoilState(buttonState);
@@ -124,94 +123,91 @@ function OnlyMovieReview({ data }) {
   }, [button.isSaving]);
 
   return (
-    <>
-      {' '}
-      <Column>
-        <Poster url={movie.thumbnail_image_url} />
-        <ReviewContainer>
-          <RowBox>
-            <Box>
-              <MovieTitle variant="h3">{movie.title}</MovieTitle>
-              <Box sx={{ flexDirection: 'row' }}>
-                <BoldText variant="subtitle2">
-                  {movie.en_title} <br />
-                  2022 · {movie.country} ·{' '}
-                  {movie.genre?.map((genreItems, index) => (
-                    <span key={index} style={{ marginRight: '10px' }}>
-                      {genreItems}
-                    </span>
-                  ))}{' '}
-                  / {movie.running_time}분
-                </BoldText>
-                <AgeBadge age={movie.age} />
-              </Box>
+    <Column>
+      <Poster url={movie.thumbnail_image_url} />
+      <ReviewContainer>
+        <RowBox>
+          <Box>
+            <MovieTitle variant="h3">{movie.title}</MovieTitle>
+            <Box sx={{ flexDirection: 'row' }}>
+              <BoldText variant="subtitle2">
+                {movie.en_title} <br />
+                2022 · {movie.country} ·{' '}
+                {movie.genre?.map((genreItems, index) => (
+                  <span key={index} style={{ marginRight: '10px' }}>
+                    {genreItems}
+                  </span>
+                ))}{' '}
+                / {movie.running_time}분
+              </BoldText>
+              <AgeBadge age={movie.age} />
             </Box>
-            <Rating
-              value={rating}
-              onChange={(e, newValue) => {
-                setRating(newValue);
-              }}
-              precision={0.5}
-              size="large"
-            />
-          </RowBox>
-          <RowLabel variant="h4">{userInfo?.nickname}님의 솔직후기</RowLabel>
-          <ReviewField
-            label="리뷰를 남겨보세요."
-            multiline
-            minRows={3}
-            maxRows={20}
-            value={content}
-            onChange={e => {
-              e.preventDefault();
-              setContent(e.target.value);
+          </Box>
+          <Rating
+            value={rating}
+            onChange={(e, newValue) => {
+              setRating(newValue);
             }}
+            precision={0.5}
+            size="large"
           />
-          <RowLabel variant="h4">관람정보</RowLabel>
-          <GridBox>
-            <Box>
-              <WatchInfoLabel variant="subtitle1">when</WatchInfoLabel>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <WatchDate
-                  label="언제 보셨나요?"
-                  inputFormat="yyyy.MM.dd HH:mm"
-                  mask="____.__.__ __:__"
-                  disableFuture={true}
-                  renderInput={params => <WhiteTextField {...params} />}
-                  value={watched_date}
-                  onChange={e => {
-                    console.log(typeof watched_date);
-                    setWatched_date(e);
-                    console.dir(watched_date);
-                  }}
-                />
-              </LocalizationProvider>
-            </Box>
-            <Box>
-              <WatchInfoLabel variant="subtitle1">where</WatchInfoLabel>
-              <WatchInfoField
-                label="어디서 보셨나요?"
-                value={name}
+        </RowBox>
+        <RowLabel variant="h4">{userInfo?.nickname}님의 솔직후기</RowLabel>
+        <ReviewField
+          label="리뷰를 남겨보세요."
+          multiline
+          minRows={3}
+          maxRows={20}
+          value={content}
+          onChange={e => {
+            e.preventDefault();
+            setContent(e.target.value);
+          }}
+        />
+        <RowLabel variant="h4">관람정보</RowLabel>
+        <GridBox>
+          <Box>
+            <WatchInfoLabel variant="subtitle1">when</WatchInfoLabel>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <WatchDate
+                label="언제 보셨나요?"
+                inputFormat="yyyy.MM.dd HH:mm"
+                mask="____.__.__ __:__"
+                disableFuture={true}
+                renderInput={params => <WhiteTextField {...params} />}
+                value={watched_date}
                 onChange={e => {
-                  setName(e.target.value);
+                  console.log(typeof watched_date);
+                  setWatched_date(e);
+                  console.dir(watched_date);
                 }}
               />
-            </Box>
-            <Box>
-              <WatchInfoLabel variant="subtitle1">with</WatchInfoLabel>
-              <WatchInfoField
-                label="누구랑 보셨나요?"
-                value={withUser}
-                onChange={e => {
-                  e.preventDefault();
-                  setWithUser(e.target.value);
-                }}
-              />
-            </Box>
-          </GridBox>
-        </ReviewContainer>
-      </Column>
-    </>
+            </LocalizationProvider>
+          </Box>
+          <Box>
+            <WatchInfoLabel variant="subtitle1">where</WatchInfoLabel>
+            <WatchInfoField
+              label="어디서 보셨나요?"
+              value={name}
+              onChange={e => {
+                setName(e.target.value);
+              }}
+            />
+          </Box>
+          <Box>
+            <WatchInfoLabel variant="subtitle1">with</WatchInfoLabel>
+            <WatchInfoField
+              label="누구랑 보셨나요?"
+              value={withUser}
+              onChange={e => {
+                e.preventDefault();
+                setWithUser(e.target.value);
+              }}
+            />
+          </Box>
+        </GridBox>
+      </ReviewContainer>
+    </Column>
   );
 }
 
